@@ -2,7 +2,7 @@
   ÉPREUVE 2 — Suivi des dépenses fournitures, Studio Lumière (60 min)
 
   Le HTML et le CSS sont déjà faits, tu n'y touches pas (sauf si tu ajoutes
-  des éléments dans la liste via JS, évidemment).
+  des éléments dans la list via JS, évidemment).
   Tout se passe dans ce fichier, en JavaScript pur (pas de bibliothèque).
 
   CONTEXTE : Studio Lumière est un salon de beauté. La gérante veut suivre
@@ -12,14 +12,14 @@
   FONCTIONNALITÉS À IMPLÉMENTER :
 
   1. AJOUT — Quand le formulaire est soumis :
-     - créer une ligne dans la liste (#liste) affichant le libellé,
-       le montant formaté (ex : "42.50 €") et un bouton "✕" de suppression
+     - créer une ligne dans la list (#list) affichant le libellé,
+       le amount formaté (ex : "42.50 €") et un bouton "✕" de suppression
      - vider les champs après l'ajout
 
-  2. VALIDATION — Refuser l'ajout et afficher un message dans #erreur si :
+  2. VALIDATION — Refuser l'ajout et afficher un message dans #error si :
      - le libellé est vide (ou ne contient que des espaces)
-     - le montant est vide, négatif ou nul
-     Le message d'erreur disparaît dès qu'un ajout est valide.
+     - le amount est vide, négatif ou nul
+     Le message d'error disparaît dès qu'un ajout est valide.
 
   3. SUPPRESSION — Le bouton "✕" de chaque ligne supprime cette dépense
      (et le total se met à jour).
@@ -39,72 +39,72 @@
 
 // Ton code ici :
 document.addEventListener("DOMContentLoaded", function()  {
-    const liste = document.querySelector("#liste");
-    const boutton = document.querySelector("button");
-    const libelle = document.querySelector("#libelle");
-    const montant = document.querySelector("#montant");
-    const erreur = document.querySelector("#erreur");
-    const total = document.querySelector("#total");
-    const form = document.querySelector("form");
+    let list = document.querySelector("#liste");
+    let button = document.querySelector("button");
+    let label = document.querySelector("#libelle");
+    let amount = document.querySelector("#montant");
+    let error = document.querySelector("#erreur");
+    let total = document.querySelector("#total");
+    let form = document.querySelector("form");
 
     function formatMoney(value) {
         parseFloat(value);
         return value.toFixed(2) + ' €';
     }
 
-    function totalAjour() {
-        var totalDepense = 0;
-        for (var i = 0; i < liste.children.length; i++) {
-          var item = liste.children[i];
-          const amountText = item.getAttribute('data-amount');
-          var amount = parseFloat(amountText);
-          if (!isNaN(amount)) {
-            totalDepense += amount;
+    function updateTotal() {
+        let totalExpense = 0;
+        for (let i = 0; i < list.children.length; i++) {
+          let item = list.children[i];
+          let amountText = item.getAttribute('data-amount');
+          let amount1 = parseFloat(amountText);
+          if (!isNaN(amount1)) {
+            totalExpense += amount1;
           }
         }
     
-        total.textContent = formatMoney(totalDepense);
+        total.textContent = formatMoney(totalExpense);
     
-        if (totalDepense > 500) {
+        if (totalExpense > 500) {
           total.classList.add('depasse');
         } else {
           total.classList.remove('depasse');
         }
   }
 
-    function ajouterDepense(libelleValue, montantValue) {
-        const li = document.createElement("li");
-        li.setAttribute('data-amount', montantValue);
-        const btn = document.createElement("button");
+    function addExpense(labelValue, amountValue) {
+        let li = document.createElement("li");
+        li.setAttribute('data-amount', amountValue);
+        let btn = document.createElement("button");
         btn.textContent = "X";
         btn.addEventListener("click", function() {
             li.remove();
-            totalAjour();
+            updateTotal();
         });
-        li.textContent = libelleValue + " " + parseFloat(montantValue).toFixed(2) + " €";
+        li.textContent = labelValue + " " + parseFloat(amountValue).toFixed(2) + " €";
         li.appendChild(btn);
-        liste.appendChild(li);
+        list.appendChild(li);
         return li;
     }
 
-    function supprimerDepense(li) {
+    function dropExpense(li) {
         li.remove();
-        total = totalAjour();
+        total = updateTotal();
     }
 
     form.addEventListener("submit" , function(event) {
         event.preventDefault();
-        const libelleValue = libelle.value.trim();
-        const montantValue = montant.value.trim();
-        if (libelleValue === "" || montantValue === "" || montantValue <= 0) {
-            erreur.textContent = "Veuillez remplir correctement les champs.";
+        let labelValue = label.value.trim();
+        let amountValue = amount.value.trim();
+        if (labelValue === "" || amountValue === "" || amountValue <= 0) {
+            error.textContent = "Veuillez remplir correctement les champs.";
             return;
         }
-        erreur.textContent = " ";
-        ajouterDepense(libelleValue, montantValue);
-        libelle.value = "";
-        montant.value = "";
-        totalAjour();
-        libelle.focus();
+        error.textContent = " ";
+        addExpense(labelValue, amountValue);
+        label.value = "";
+        amount.value = "";
+        updateTotal();
+        label.focus();
     });
 });
