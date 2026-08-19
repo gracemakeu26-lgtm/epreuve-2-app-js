@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function()  {
     let error = document.querySelector("#erreur");
     let total = document.querySelector("#total");
     let form = document.querySelector("form");
+    const DOOR = 500;
 
     function updateTotal() {
         let totalExpense = 0;
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function()  {
     
         total.textContent = totalExpense.toFixed(2) + " €";
     
-        if (totalExpense > 500) {
+        if (totalExpense > DOOR) {
           total.classList.add('depasse');
         } else {
           total.classList.remove('depasse');
