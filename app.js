@@ -40,17 +40,11 @@
 // Ton code ici :
 document.addEventListener("DOMContentLoaded", function()  {
     let list = document.querySelector("#liste");
-    let button = document.querySelector("button");
     let label = document.querySelector("#libelle");
     let amount = document.querySelector("#montant");
     let error = document.querySelector("#erreur");
     let total = document.querySelector("#total");
     let form = document.querySelector("form");
-
-    function formatMoney(value) {
-        parseFloat(value);
-        return value.toFixed(2) + ' €';
-    }
 
     function updateTotal() {
         let totalExpense = 0;
@@ -63,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function()  {
           }
         }
     
-        total.textContent = formatMoney(totalExpense);
+        total.textContent = totalExpense.toFixed(2) + " €";
     
         if (totalExpense > 500) {
           total.classList.add('depasse');
@@ -86,12 +80,6 @@ document.addEventListener("DOMContentLoaded", function()  {
         list.appendChild(li);
         return li;
     }
-
-    function dropExpense(li) {
-        li.remove();
-        total = updateTotal();
-    }
-
     form.addEventListener("submit" , function(event) {
         event.preventDefault();
         let labelValue = label.value.trim();
